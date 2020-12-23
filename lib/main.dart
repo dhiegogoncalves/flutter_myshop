@@ -4,6 +4,7 @@ import 'package:myshop_flutter/providers/orders.dart';
 import 'package:myshop_flutter/providers/products.dart';
 import 'package:myshop_flutter/utils/app_routes.dart';
 import 'package:myshop_flutter/views/cart_screen.dart';
+import 'package:myshop_flutter/views/orders_screen.dart';
 import 'package:myshop_flutter/views/product_detail_screen.dart';
 import 'package:myshop_flutter/views/products_overview_screen.dart';
 import 'package:provider/provider.dart';
@@ -31,10 +32,11 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.deepOrange,
           fontFamily: 'Lato',
         ),
-        home: ProductsOverviewScreen(),
         routes: {
+          AppRoutes.HOME: (ctx) => ProductsOverviewScreen(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
-          AppRoutes.CART: (ctx) => CartScreen()
+          AppRoutes.CART: (ctx) => CartScreen(),
+          AppRoutes.ORDERS: (ctx) => OrdersScreen(),
         },
       ),
     );

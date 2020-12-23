@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myshop_flutter/providers/cart.dart';
 import 'package:myshop_flutter/utils/app_routes.dart';
+import 'package:myshop_flutter/widgets/app_drawer.dart';
 import 'package:myshop_flutter/widgets/badge.dart';
 import 'package:myshop_flutter/widgets/product_grid.dart';
 import 'package:provider/provider.dart';
@@ -61,6 +62,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       body: ProductGrid(_showFavoriteOnly),
+      drawer: AppDrawer(),
     );
   }
 }
