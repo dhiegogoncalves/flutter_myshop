@@ -1,29 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:myshop_flutter/providers/products.dart';
-import 'package:myshop_flutter/widgets/product_item.dart';
-import 'package:provider/provider.dart';
+import 'package:myshop_flutter/widgets/product_grid.dart';
 
-class ProductsOverviewScreen extends StatelessWidget {
+enum FilterOptions {
+  Favorite,
+  All,
+}
+
+class ProductsOverviewScreen extends StatefulWidget {
+  @override
+  _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
+}
+
+class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
+  bool _showFavoriteOnly = false;
+
   @override
   Widget build(BuildContext context) {
-    final productsProvider = Provider.of<Products>(context);
-    final products = productsProvider.items;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Minha Loja'),
+        actions: [
+          PopupMenuButton(
+            onSelected: (FilterOptions selectedValue) {
+              setState(() {
+                if (selectedValue == FilterOptions.Favorite) {
+                  _showFavoriteOnly = true;
+                } else {
+                  _showFavoriteOnly = false;
+                }
+              });
+            },
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                child: Text('Somente Favoritos'),
+                value: FilterOptions.Favorite,
+              ),
+              PopupMenuItem(
+                child: Text('Todos'),
+                value: FilterOptions.All,
+              ),
+            ],
+          )
+        ],
       ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: products.length,
-        padding: const EdgeInsets.all(10),
-        itemBuilder: (ctx, i) => ProductItem(products[i]),
-      ),
+      body: ProductGrid(_showFavoriteOnly),
     );
   }
 }
