@@ -1,65 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:myshop_flutter/providers/cart.dart';
+import 'package:flutter/widgets.dart';
 import 'package:myshop_flutter/providers/product.dart';
+import 'package:myshop_flutter/providers/products.dart';
 import 'package:myshop_flutter/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
+  final Product product;
+
+  ProductItem(this.product);
+
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context, listen: false);
-    final cart = Provider.of<Cart>(context, listen: false);
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: GridTile(
-        child: GestureDetector(
-          onTap: () => Navigator.of(context).pushNamed(
-            AppRoutes.PRODUCT_DETAIL,
-            arguments: product,
-          ),
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
-        footer: GridTileBar(
-          backgroundColor: Colors.black87,
-          leading: Consumer<Product>(
-            builder: (ctx, product, _) => IconButton(
-              icon: Icon(
-                  product.isFavorite ? Icons.favorite : Icons.favorite_border),
-              color: Theme.of(context).accentColor,
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(product.imageUrl),
+      ),
+      title: Text(product.title),
+      trailing: Container(
+        width: 100,
+        child: Row(
+          children: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              color: Theme.of(context).primaryColor,
               onPressed: () {
-                product.toggleFavorite();
+                Navigator.of(context).pushNamed(
+                  AppRoutes.PRODUCT_FORM,
+                  arguments: product,
+                );
               },
             ),
-          ),
-          title: Text(
-            product.title,
-            textAlign: TextAlign.center,
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.shopping_cart),
-            color: Theme.of(context).accentColor,
-            onPressed: () {
-              cart.addItem(product);
-
-              Scaffold.of(context).hideCurrentSnackBar();
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Produto adicionado com sucesso!'),
-                  duration: Duration(seconds: 2),
-                  action: SnackBarAction(
-                    label: 'DESFAZER',
-                    onPressed: () {
-                      cart.removeSingleItem(product.id);
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              color: Theme.of(context).errorColor,
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                          title: Text('Excluir Produto'),
+                          content: Text('Tem certeza?'),
+                          actions: [
+                            FlatButton(
+                              child: Text('Não'),
+                              onPressed: () => Navigator.of(context).pop(false),
+                            ),
+                            FlatButton(
+                              child: Text('Sim'),
+                              onPressed: () => Navigator.of(context).pop(true),
+                            ),
+                          ],
+                        )).then(
+                  (value) {
+                    if (value) {
+                      Provider.of<Products>(context, listen: false)
+                          .deleteProduct(product.id);
+                    }
+                  },
+                );
+              },
+            )
+          ],
         ),
       ),
     );
