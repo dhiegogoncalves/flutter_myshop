@@ -10,8 +10,13 @@ import 'package:myshop_flutter/views/product_form_screen.dart';
 import 'package:myshop_flutter/views/products_overview_screen.dart';
 import 'package:myshop_flutter/views/products_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  await DotEnv().load('.env_dev');
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
