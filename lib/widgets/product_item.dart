@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:myshop_flutter/exceptions/http_exception.dart';
 import 'package:myshop_flutter/providers/product.dart';
 import 'package:myshop_flutter/providers/products.dart';
 import 'package:myshop_flutter/utils/app_routes.dart';
@@ -12,6 +13,8 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(product.imageUrl),
@@ -50,14 +53,21 @@ class ProductItem extends StatelessWidget {
                               onPressed: () => Navigator.of(context).pop(true),
                             ),
                           ],
-                        )).then(
-                  (value) {
-                    if (value) {
-                      Provider.of<Products>(context, listen: false)
+                        )).then((value) async {
+                  if (value) {
+                    try {
+                      await Provider.of<Products>(context, listen: false)
                           .deleteProduct(product.id);
+                    } catch (error) {
+                      scaffold.showSnackBar(
+                        SnackBar(
+                          content: Text(error.toString()),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
                     }
-                  },
-                );
+                  }
+                });
               },
             )
           ],
