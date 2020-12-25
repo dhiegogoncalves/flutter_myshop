@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:myshop_flutter/exceptions/http_exception.dart';
 import 'package:myshop_flutter/providers/product.dart';
+import 'package:myshop_flutter/utils/constants.dart';
 
 class Products with ChangeNotifier {
-  final _baseUrl = '${DotEnv().env['databaseUrl']}products';
+  final _baseUrl = '${Constants.baseApiUrl}/products';
 
   List<Product> _items = [];
 
