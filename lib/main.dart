@@ -3,6 +3,7 @@ import 'package:myshop_flutter/providers/cart.dart';
 import 'package:myshop_flutter/providers/orders.dart';
 import 'package:myshop_flutter/providers/products.dart';
 import 'package:myshop_flutter/utils/app_routes.dart';
+import 'package:myshop_flutter/views/auth_screen.dart';
 import 'package:myshop_flutter/views/cart_screen.dart';
 import 'package:myshop_flutter/views/orders_screen.dart';
 import 'package:myshop_flutter/views/product_detail_screen.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Lato',
         ),
         routes: {
+          AppRoutes.AUTH: (ctx) => AuthScreen(),
           AppRoutes.HOME: (ctx) => ProductsOverviewScreen(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
           AppRoutes.CART: (ctx) => CartScreen(),
