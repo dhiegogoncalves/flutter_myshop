@@ -5,7 +5,6 @@ import 'package:myshop_flutter/providers/orders.dart';
 import 'package:myshop_flutter/providers/products.dart';
 import 'package:myshop_flutter/utils/app_routes.dart';
 import 'package:myshop_flutter/views/auth_home_screen.dart';
-import 'package:myshop_flutter/views/auth_screen.dart';
 import 'package:myshop_flutter/views/cart_screen.dart';
 import 'package:myshop_flutter/views/orders_screen.dart';
 import 'package:myshop_flutter/views/product_detail_screen.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:myshop_flutter/exceptions/http_exception.dart';
 import 'package:myshop_flutter/providers/product.dart';
 import 'package:myshop_flutter/providers/products.dart';
 import 'package:myshop_flutter/utils/app_routes.dart';
