@@ -9,9 +9,10 @@ import 'package:myshop_flutter/utils/constants.dart';
 class Products with ChangeNotifier {
   final _baseUrl = '${Constants.baseApiUrl}/products';
   String _token;
+  String _userId;
   List<Product> _items = [];
 
-  Products(this._token, this._items);
+  Products([this._token, this._userId, this._items = const []]);
 
   List<Product> get items => [..._items];
 
@@ -28,15 +29,23 @@ class Products with ChangeNotifier {
     Map<String, dynamic> data = json.decode(response.body);
     _items.clear();
 
+    final userFavoritesResponse = await http.get(
+        '${Constants.baseApiUrl}/userFavorites/$_userId.json?auth=$_token');
+    final userFavoritesMap = json.decode(userFavoritesResponse.body);
+
     if (data != null) {
       data.forEach((productId, productData) {
+        final isFavorite = userFavoritesMap == null
+            ? false
+            : userFavoritesMap[productId] ?? false;
+
         _items.add(Product(
           id: productId,
           title: productData['title'],
           description: productData['description'],
           price: productData['price'],
           imageUrl: productData['imageUrl'],
-          isFavorite: productData['isFavorite'],
+          isFavorite: isFavorite,
         ));
       });
     }
@@ -52,7 +61,6 @@ class Products with ChangeNotifier {
         'description': newProduct.description,
         'price': newProduct.price,
         'imageUrl': newProduct.imageUrl,
-        'isFavorite': newProduct.isFavorite,
       }),
     );
 

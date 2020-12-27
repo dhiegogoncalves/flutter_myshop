@@ -6,8 +6,13 @@ import 'package:myshop_flutter/exceptions/auth_exception.dart';
 import 'package:myshop_flutter/utils/constants.dart';
 
 class Auth with ChangeNotifier {
+  String _userId;
   String _token;
   DateTime _expiryDate;
+
+  String get userId {
+    return isAuth ? _userId : null;
+  }
 
   bool get isAuth {
     return token != null;
@@ -43,6 +48,7 @@ class Auth with ChangeNotifier {
     if (responseBody['error'] != null) {
       throw AuthException(responseBody['error']['message']);
     } else {
+      _userId = responseBody['localId'];
       _token = responseBody['idToken'];
       _expiryDate = DateTime.now().add(
         Duration(
